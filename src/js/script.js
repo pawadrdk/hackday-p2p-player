@@ -1,7 +1,7 @@
 "use strict";
 // hls
 
-const mSeedPeer = "http://172.20.10.3:10000/master.m3u8";
+const mSeedPeer = "http://localhost:10000/master.m3u8";
 const hqDR2 = "https://drevent-lh.akamaihd.net/i/event12_0@427365/master.m3u8";
 const DR2 = "https://dr02-lh.akamaihd.net/i/dr02_0@147055/master.m3u8"
 
@@ -76,11 +76,11 @@ player.getChild('controlBar').addChild('hqBtn');
 
 var totalConnections = document.getElementById("total-connections");
 var connectionsList = document.getElementById("connections-list");
-console.log("total", totalConnections);
-console.log("connectionslist", connectionsList);
+
 function updateTotal(connections) {
   totalConnections.innerHTML = "Total Connections: " + connections;
 }
+
 function addToConnectionList(connection) {
   var connectionId = connection.id ? connection.id : "unnamed";
   var connectionUp = connection.upload ? connection.upload : "? kbs";
@@ -94,10 +94,18 @@ function addToConnectionList(connection) {
   
   var listElement = document.createElement('li');
   listElement.innerHTML = template;
-  console.log("list element", listElement);
   connectionsList.appendChild(listElement);
+
+  return listElement;
 }
+function updateMonitor(connections) {
+  connectionsList.innerHTML = '';
+  connections.forEach(function(connection) {
+    addToConnectionList(connection);
+  });
+}
+
 updateTotal("1");
-addToConnectionList({"id": "myId", "up":"500 kbs", "down": "600 kbs"});
-addToConnectionList({"id": "myId", "up":"500 kbs", "down": "600 kbs"});
-addToConnectionList({"id": "myId", "up":"500 kbs", "down": "600 kbs"});
+addToConnectionList({"id": "myId", "upload":"500 kbs", "download": "600 kbs"});
+addToConnectionList({"id": "myId", "upload":"500 kbs", "download": "600 kbs"});
+updateMonitor([{"id": "myId", "upload":"666 kbs", "download": "666 kbs"},{"id": "myId", "upload":"666 kbs", "download": "666 kbs"},{"id": "myId", "upload":"666 kbs", "download": "666 kbs"},{"id": "myId", "upload":"666 kbs", "download": "666 kbs"}]);
