@@ -1,0 +1,36 @@
+.poc-player .bing-menu {
+  z-index: 2147483647;
+  width: 100%;
+  height: 60px;
+  display: block;
+  position:absolute;
+  bottom: 30px;
+  opacity:0.5;
+  background-color:yellow;
+}
+.poc-player .bing-menu .bing-link{
+  background-color: blue;
+  color: white;
+  width:60px;
+  height:60px;
+  display:inline-block;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.poc-player .bing-menu .bing-link:before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.poc-player .vjs-subtitles-button {
+  display: none;
+}
+video::-webkit-media-controls {
+  display:none !important;
+}
+video::-webkit-media-controls-enclosure {
+  display:none !important;
+}

@@ -1,1 +1,1 @@
-# hackday-p2p-player
+# videojs-poc
