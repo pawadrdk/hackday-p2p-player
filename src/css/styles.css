@@ -49,3 +49,31 @@ video::-webkit-media-controls-enclosure {
     font-style: normal;
     font-family: Arial,Helvetica,sans-serif;
 }
+.poc-player .active {
+  color: red !important;
+  border-color: red !important;
+}
+.monitoring {
+  font-size: 18px;
+  line-height:20px;
+  font-weight: bold;
+  color: black;
+}
+#total-connections {
+  border-bottom: 2px solid black;
+}
+#connections-list {
+  list-style-type: none;
+  margin:0;
+  padding:0;
+}
+#connections-list li{
+  padding: 5px 5px 5px 0;
+  text-decoration: underline;
+}
+.list-data{
+  float:left;
+  width: 30%;
+  border-bottom: 1px solid black;
+  padding:5px;
+}

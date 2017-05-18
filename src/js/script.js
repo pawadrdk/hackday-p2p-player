@@ -1,7 +1,7 @@
 "use strict";
 // hls
 
-const mSeedPeer = "http://172.20.1.105:8081/master.m3u8";
+const mSeedPeer = "http://172.20.10.3:10000/master.m3u8";
 const hqDR2 = "https://drevent-lh.akamaihd.net/i/event12_0@427365/master.m3u8";
 const DR2 = "https://dr02-lh.akamaihd.net/i/dr02_0@147055/master.m3u8"
 
@@ -44,6 +44,7 @@ var Button = videojs.getComponent('Button');
 var hqBtn = videojs.extend(Button, {
   constructor: function () {
     Button.apply(this, arguments);
+    this.isHQ = false;
     /* initialize your button */
     // Add component specific styling
     this.addClass("hq-btn");
@@ -51,7 +52,19 @@ var hqBtn = videojs.extend(Button, {
   },
   handleClick: function () {
     /* do something on click */
-    console.log("clicked hq");
+    console.log("enable hq", !this.isHQ);
+    if(this.isHQ) {
+      this.removeClass("active");
+      this.isHQ = false;
+      player.src({type: 'application/x-mpegURL', src: DR2 });
+      player.play();
+    }else{
+      this.addClass("active");
+      this.isHQ = true;
+      player.src({type: 'application/x-mpegURL', src: mSeedPeer });
+      player.play()
+    }
+    
   }
 });
 
@@ -61,3 +74,30 @@ Button.registerComponent('hqBtn', hqBtn);
 // Add the bingmenu component to the player
 player.getChild('controlBar').addChild('hqBtn');
 
+var totalConnections = document.getElementById("total-connections");
+var connectionsList = document.getElementById("connections-list");
+console.log("total", totalConnections);
+console.log("connectionslist", connectionsList);
+function updateTotal(connections) {
+  totalConnections.innerHTML = "Total Connections: " + connections;
+}
+function addToConnectionList(connection) {
+  var connectionId = connection.id ? connection.id : "unnamed";
+  var connectionUp = connection.upload ? connection.upload : "? kbs";
+  var connectionDown = connection.download ? connection.download : "? kbs";
+  
+  var up = '<div class="list-data"> | up: ' + connectionUp + '</div>';
+  var down = '<div class="list-data"> | down: ' + connectionDown + '</div>';
+  var name = '<div class="list-data"> | name: ' + connectionId + '</div>';
+
+  var template = name + down + up;
+  
+  var listElement = document.createElement('li');
+  listElement.innerHTML = template;
+  console.log("list element", listElement);
+  connectionsList.appendChild(listElement);
+}
+updateTotal("1");
+addToConnectionList({"id": "myId", "up":"500 kbs", "down": "600 kbs"});
+addToConnectionList({"id": "myId", "up":"500 kbs", "down": "600 kbs"});
+addToConnectionList({"id": "myId", "up":"500 kbs", "down": "600 kbs"});
