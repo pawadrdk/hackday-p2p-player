@@ -48,53 +48,16 @@ var player = videojs('videojs_player', {
 // set subtitles
 player.addRemoteTextTrack({
   kind: 'subtitles',
-  src: webvtt1,
-  srclang: 'dk',
-  label: 'HardOfHearing'
-});
-
-player.addRemoteTextTrack({
-  kind: 'subtitles',
   src: webvtt2,
   srclang: 'dk',
   label: 'Foreign'
 });
 
+
 player.addRemoteTextTrack({
   kind: 'subtitles',
-  src: webvtt3,
+  src: webvtt1,
   srclang: 'dk',
-  label: 'Foreign_HardOfHearing',
+  label: 'HardOfHearing'
 });
-
-// create the bing menu
-var bingLink1 = ("<a href='#123' class='bing-link'> BINGLINK1 </a>")
-var bingLink2 = ("<a href='#456' class='bing-link'> BINGLINK2 </a>")
-
-// Get a component to subclass
-// var vjsButton = videojs.getComponent('button');
-var vjsComponent = videojs.getComponent('component');
-
-// Subclass the component (see 'extend' doc for more info)
-// list of components to extend http://docs.videojs.com/docs/guides/components.html
-var bingMenu = videojs.extend(vjsComponent, {
-  constructor: function () {
-    vjsComponent.apply(this, arguments);
-    /* initialize your button */
-    // Add component specific styling
-    this.addClass("bing-menu");
-    // add component specific html element
-    this.el().innerHTML = bingLink1 + bingLink2;
-  },
-  handleClick: function () {
-    /* do something on click */
-    console.log("clicked");
-  }
-});
-
-// Register the new component with videojs
-vjsComponent.registerComponent('bingMenu', bingMenu);
-
-// Add the bingmenu component to the player
-var myBingMenu = player.addChild("bingMenu");
 
