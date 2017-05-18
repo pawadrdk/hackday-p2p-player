@@ -4,10 +4,27 @@ var ws = require('websocket-stream')
 var createServer = require('browser-server')
 
 var archive = hyperdrive(ram, '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef', {sparse: true})
+var speedometer = require('speedometer');
+var prettierBytes = require('prettier-bytes');
 
 archive.on('content', function () {
-  archive.content.on('download', function (i, data) {
-    console.log('Downloaded block ' + i + ' (' + data.length + ')')
+  var upSpeed = speedometer();
+  var downSpeed = speedometer();
+  archive.content.on('upload', function (i, data, peer) {
+    // upspsed
+    console.log("up", prettierBytes(upSpeed(data.length))+ "/s");
+    // downspeed
+    console.log("down", prettierBytes(downSpeed()));
+    // nr of connections
+    console.log("nr of peers", archive.content.peers.length);  
+  })
+  archive.content.on('download', function (i, data, peer) {
+    // downspeed
+    console.log("down", prettierBytes(downSpeed(data.length)));
+    // upspseed
+    console.log("up", prettierBytes(upSpeed()));
+    // nr of total connections
+    console.log("nr of peers", archive.content.peers.length);
   })
 })
 
@@ -46,9 +63,6 @@ server.on('request', function (req, res) {
     var stream = archive.createReadStream(name, r)
 
     stream.pipe(res)
-    stream.on('data', function () {
-      console.log('ondata')
-    })
   })
 })
 
