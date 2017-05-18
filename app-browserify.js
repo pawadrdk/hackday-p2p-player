@@ -5,7 +5,13 @@ var createServer = require('browser-server')
 var swarm = require('webrtc-swarm')
 var signalhub = require('signalhub')
 
-var archive = hyperdrive(ram, '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef', {sparse: true})
+// var key = '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef'
+// var seed = 'ws://hasselhoff.mafintosh.com:30000'
+
+var key = '344bd65dc86d9fc986b6f40093382f77ba21cfc9d3502c78148cce1ced500bc6'
+var seed = 'ws://localhost:30000'
+
+var archive = hyperdrive(ram, key, {sparse: true})
 var speedometer = require('speedometer');
 var prettierBytes = require('prettier-bytes');
 
@@ -18,7 +24,7 @@ archive.on('content', function () {
     // downspeed
     console.log("down", prettierBytes(downSpeed()));
     // nr of connections
-    console.log("nr of peers", archive.content.peers.length);  
+    console.log("nr of peers", archive.content.peers.length);
   })
   archive.content.on('download', function (i, data, peer) {
     // downspeed
@@ -37,11 +43,11 @@ archive.metadata.on('download', function (i) {
 archive.on('ready', function () {
   if (window.location.toString().indexOf('noseed') === -1) {
     console.log('Also connecting to seed')
-    var s = ws('ws://hasselhoff.mafintosh.com:30000')
+    var s = ws(seed)
     s.pipe(archive.replicate({live: true, encrypt: false})).pipe(s)
   }
 
-  var sw = swarm(signalhub(archive.discoveryKey.toString('hex'), ['http://hasselhoff.mafintosh.com:40000']))
+  var sw = swarm(signalhub(archive.discoveryKey.toString('hex'), ['https://signalhub.mafintosh.com']))
 
   sw.on('peer', function (c) {
     c.pipe(archive.replicate({live: true, encrypt: false})).pipe(c)
