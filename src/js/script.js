@@ -1,7 +1,7 @@
 "use strict";
 // hls
 
-const mSeedPeer = "http://localhost:10000/master.m3u8";
+const mSeedPeer = "/browser-server/master.m3u8";
 const hqDR2 = "https://drevent-lh.akamaihd.net/i/event12_0@427365/master.m3u8";
 const DR2 = "https://dr02-lh.akamaihd.net/i/dr02_0@147055/master.m3u8"
 
@@ -64,7 +64,7 @@ var hqBtn = videojs.extend(Button, {
       player.src({type: 'application/x-mpegURL', src: mSeedPeer });
       player.play()
     }
-    
+
   }
 });
 
@@ -85,13 +85,13 @@ function addToConnectionList(connection) {
   var connectionId = connection.id ? connection.id : "unnamed";
   var connectionUp = connection.upload ? connection.upload : "? kbs";
   var connectionDown = connection.download ? connection.download : "? kbs";
-  
+
   var up = '<div class="list-data"> | up: ' + connectionUp + '</div>';
   var down = '<div class="list-data"> | down: ' + connectionDown + '</div>';
   var name = '<div class="list-data"> | name: ' + connectionId + '</div>';
 
   var template = name + down + up;
-  
+
   var listElement = document.createElement('li');
   listElement.innerHTML = template;
   connectionsList.appendChild(listElement);
