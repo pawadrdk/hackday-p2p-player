@@ -2,6 +2,8 @@ var hyperdrive = require('hyperdrive')
 var ram = require('random-access-memory')
 var ws = require('websocket-stream')
 var createServer = require('browser-server')
+var swarm = require('webrtc-swarm')
+var signalhub = require('signalhub')
 
 var archive = hyperdrive(ram, '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef', {sparse: true})
 
@@ -16,9 +18,17 @@ archive.metadata.on('download', function (i) {
 })
 
 archive.on('ready', function () {
-  var s = ws('ws://hasselhoff.mafintosh.com:30000')
+  if (window.location.toString().indexOf('noseed') === -1) {
+    console.log('Also connecting to seed')
+    var s = ws('ws://hasselhoff.mafintosh.com:30000')
+    s.pipe(archive.replicate({live: true, encrypt: false})).pipe(s)
+  }
 
-  s.pipe(archive.replicate({live: true, encrypt: false})).pipe(s)
+  var sw = swarm(signalhub(archive.discoveryKey.toString('hex'), ['http://hasselhoff.mafintosh.com:40000']))
+
+  sw.on('peer', function (c) {
+    c.pipe(archive.replicate({live: true, encrypt: false})).pipe(c)
+  })
 })
 
 var server = createServer()

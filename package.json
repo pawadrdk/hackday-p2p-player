@@ -23,9 +23,11 @@
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
     "random-access-memory": "^2.4.0",
+    "signalhub": "^4.8.0",
     "style-loader": "^0.13.1",
     "video.js": "^5.15.1",
     "webpack": "^1.13.2",
+    "webrtc-swarm": "^2.8.0",
     "websocket-stream": "^4.0.0"
   },
   "devDependencies": {
