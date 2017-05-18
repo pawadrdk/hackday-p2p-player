@@ -1,6 +1,8 @@
 "use strict";
 // hls
-const hls = "http://drod10i-vh.akamaihd.net/i/dk/clear/streaming/70/591ca1c06187a60f00830270/Alene-i-vildmarken-USA-II--10-_58fb60ca823542668a34034fa48928a0_,562,.mp4.csmil/master.m3u8";
+const hls = "http://172.20.1.105:8081/master.m3u8";
+//const hls = "http://172.20.1.105:8081/master.m3u8";
+//const hls = "http://drod10i-vh.akamaihd.net/i/dk/clear/streaming/70/591ca1c06187a60f00830270/Alene-i-vildmarken-USA-II--10-_58fb60ca823542668a34034fa48928a0_,562,.mp4.csmil/master.m3u8";
 
 // encrypted hls
 const encryptedHls = "http://drod08h-vh.akamaihd.net/i/dk/encrypted/streaming/75/588246aaa11f9f0c2c197375/The-Tonight-Show-med-Jimmy-Fal_fac673769752436faeda69fb8ba557ed_,1128,562,2394,362,.mp4.csmil/master.m3u8"
