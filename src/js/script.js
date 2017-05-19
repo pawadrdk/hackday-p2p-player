@@ -1,7 +1,9 @@
 "use strict";
 // hls
 
-const mSeedPeer = "/browser-server/index_800_av-p.m3u8";
+var HIGH_Q = window.location.toString().indexOf('high') > -1
+
+const mSeedPeer = HIGH_Q ? "/browser-server/master.m3u8" : "/browser-server/index_800_av-p.m3u8";
 const hqDR2 = "https://drevent-lh.akamaihd.net/i/event12_0@427365/master.m3u8";
 const DR2 = "https://dr02-lh.akamaihd.net/i/dr02_0@147055/master.m3u8"
 
