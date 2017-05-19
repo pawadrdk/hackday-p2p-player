@@ -4,6 +4,7 @@ var ws = require('websocket-stream')
 var createServer = require('browser-server')
 var swarm = require('webrtc-swarm')
 var signalhub = require('signalhub')
+var pump = require('pump')
 
 // var key = '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef'
 // var seed = 'ws://hasselhoff.mafintosh.com:30000'
@@ -44,13 +45,13 @@ archive.on('ready', function () {
   if (window.location.toString().indexOf('noseed') === -1) {
     console.log('Also connecting to seed')
     var s = ws(seed)
-    s.pipe(archive.replicate({live: true, encrypt: false})).pipe(s)
+    pump(s, archive.replicate({live: true, encrypt: false}), s)
   }
 
   var sw = swarm(signalhub(archive.discoveryKey.toString('hex'), ['https://signalhub.mafintosh.com']))
 
   sw.on('peer', function (c) {
-    c.pipe(archive.replicate({live: true, encrypt: false})).pipe(c)
+    pump(c, archive.replicate({live: true, encrypt: false}), c)
   })
 })
 
