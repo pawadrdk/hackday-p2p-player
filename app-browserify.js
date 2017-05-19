@@ -55,8 +55,15 @@ archive.on('ready', function () {
     pump(s, w, s)
 
     if (HIGH_Q) {
-      var s = ws('wss://hasselhoff.mafintosh.com:30000')
-      pump(s, archive.replicate({live: true, encrypt: false}), s)
+      loop()
+
+      function loop () {
+        var s = ws('wss://hasselhoff.mafintosh.com:30000')
+        pump(s, archive.replicate({live: true, encrypt: false}), s, function () {
+          console.log('Reconnecting to seed')
+          setTimeout(loop, 1000)
+        })
+      }
     }
   }
 
