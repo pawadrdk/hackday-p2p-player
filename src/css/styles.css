@@ -1,3 +1,7 @@
+#videojs_player {
+  height:360;
+  width:640;
+}
 .poc-player .bing-menu {
   z-index: 2147483647;
   width: 100%;
