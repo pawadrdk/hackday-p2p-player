@@ -30,7 +30,7 @@ window.p2pArchive = archive;
 window.peers = {};
 archive.on('content', function () {
   archive.content.on('upload', function (i, data, peer) {
-    
+
     // if peerid doesnt exist in list, initPeer or fetchPeer
 
     // then set upspeed both for total and individual peer
@@ -38,14 +38,14 @@ archive.on('content', function () {
   })
   archive.content.on('download', function (i, data, peer) {
     // if peerid doesnt exist in list, initPeer or fetchPeer
-    console.log("", peer);
+    // console.log("", peer);
     // then set downspeed both for total and individual peer
     window.totalConnections.downSpeed(data.length);
   })
 archive.metadata.on('download', function (i, b, p) {
   // console.log(p)
 })
-
+})
 
 archive.on('ready', function () {
   if (window.location.toString().indexOf('noseed') === -1) {
@@ -101,5 +101,4 @@ server.on('ready', function () {
 
 server.on('reload', function () {
   location.reload()
-})
 })
