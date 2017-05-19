@@ -84,5 +84,8 @@ server.on('request', function (req, res) {
 
 server.on('ready', function () {
   fetch('/browser-server/test.js')
+})
 
+server.on('reload', function () {
+  location.reload()
 })
