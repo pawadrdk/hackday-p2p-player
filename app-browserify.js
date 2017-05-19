@@ -8,8 +8,8 @@ var pump = require('pump')
 
 var HIGH_Q = window.location.toString().indexOf('high') > -1
 
-var key = HIGH_Q ? 'c2029e3a7f31e6749304971120e029b8a994502e1002be376d5a1452ec37b94e' : 'ad3998d84ebaf4fea8318b2d41d5b990913531ffdc4b288e4818a5f49642eeb7'
-var seed = HIGH_Q ? 'wss://hasselhoff.mafintosh.com:30000' : 'ws://localhost:30000'
+var key = HIGH_Q ? '49036de8c59a846892d5d6366031d723adca46440da15716db50d9c344d71391' : 'ad3998d84ebaf4fea8318b2d41d5b990913531ffdc4b288e4818a5f49642eeb7'
+var seed = 'ws://localhost:30000'
 
 var archive = hyperdrive(ram, key, {sparse: true})
 var speedometer = require('speedometer');
@@ -36,15 +36,22 @@ archive.on('content', function () {
   })
 })
 
-archive.metadata.on('download', function (i) {
-  // console.log(i)
+archive.metadata.on('download', function (i, b, p) {
+  // console.log(p)
 })
+
 
 archive.on('ready', function () {
   if (window.location.toString().indexOf('noseed') === -1) {
     console.log('Also connecting to seed')
     var s = ws(seed)
-    pump(s, archive.replicate({live: true, encrypt: false}), s)
+    var w = archive.replicate({live: true, encrypt: false})
+    pump(s, w, s)
+
+    if (HIGH_Q) {
+      var s = ws('wss://hasselhoff.mafintosh.com:30000')
+      pump(s, archive.replicate({live: true, encrypt: false}), s)
+    }
   }
 
   var sw = swarm(signalhub(archive.discoveryKey.toString('hex'), ['https://signalhub.mafintosh.com']))
