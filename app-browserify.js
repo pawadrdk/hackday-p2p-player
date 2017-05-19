@@ -9,36 +9,41 @@ var pump = require('pump')
 // var key = '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef'
 // var seed = 'ws://hasselhoff.mafintosh.com:30000'
 
-var key = window.localStorage.KEY || 'ad3998d84ebaf4fea8318b2d41d5b990913531ffdc4b288e4818a5f49642eeb7'
+var key = window.localStorage.KEY || 'c7eb61045d0e8ea61156d5fbd5b658e8ae7abe816d3b08f4dee31e3aa4a0d133'
 var seed = window.localStorage.SEED || 'ws://localhost:30000'
 
 var archive = hyperdrive(ram, key, {sparse: true})
 var speedometer = require('speedometer');
 var prettierBytes = require('prettier-bytes');
+window.totalConnections = {
+  upSpeed: speedometer(20),
+  downSpeed: speedometer(20)
+}
+function initPeer(peerId){
+ return {
+   id: peerId,
+   upSpeed: speedometer(20),
+   downSpeed: speedometer(20)
+ }
+}
 
+window.p2pArchive = archive;
+window.peers = {};
 archive.on('content', function () {
-  var upSpeed = speedometer();
-  var downSpeed = speedometer();
   archive.content.on('upload', function (i, data, peer) {
-    // upspsed
-    console.log("up", prettierBytes(upSpeed(data.length))+ "/s");
-    // downspeed
-    console.log("down", prettierBytes(downSpeed()));
-    // nr of connections
-    console.log("nr of peers", archive.content.peers.length);
+    
+    // if peerid doesnt exist in list, initPeer or fetchPeer
+
+    // then set upspeed both for total and individual peer
+    window.totalConnections.upSpeed(data.length);
   })
   archive.content.on('download', function (i, data, peer) {
-    // downspeed
-    console.log("down", prettierBytes(downSpeed(data.length)));
-    // upspseed
-    console.log("up", prettierBytes(upSpeed()));
-    // nr of total connections
-    console.log("nr of peers", archive.content.peers.length);
-  })
-})
 
-archive.metadata.on('download', function (i) {
-  // console.log(i)
+    // if peerid doesnt exist in list, initPeer or fetchPeer
+    console.log("", peer);
+    // then set downspeed both for total and individual peer
+    window.totalConnections.downSpeed(data.length);
+  })
 })
 
 archive.on('ready', function () {

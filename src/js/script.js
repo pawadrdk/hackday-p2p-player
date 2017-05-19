@@ -77,10 +77,16 @@ player.getChild('controlBar').addChild('hqBtn');
 var totalConnections = document.getElementById("total-connections");
 var connectionsList = document.getElementById("connections-list");
 
-function updateTotal(connections) {
-  totalConnections.innerHTML = "Total Connections: " + connections;
+function updateTotal(connections, down, up) {
+  console.log("set innerhtml", connections);
+  var totalConn = '<div class="list-data"> | Total Connections: ' + connections + '</div>'
+  var down = '<div class="list-data"> | down ' + down + "/s </div>";
+  var up = '<div class="list-data"> | up' + up + "/s </div>";
+  totalConnections.innerHTML = totalConn + down + up;
 }
+function updateTotalSpeed(down, up) {
 
+}
 function addToConnectionList(connection) {
   var connectionId = connection.id ? connection.id : "unnamed";
   var connectionUp = connection.upload ? connection.upload : "? kbs";
@@ -104,6 +110,16 @@ function updateMonitor(connections) {
     addToConnectionList(connection);
   });
 }
+var prettierBytes = require('prettier-bytes');
+// global update state
+setInterval(function() {
+  console.log("global upspeed", prettierBytes(window.totalConnections.upSpeed()));
+  console.log("global downspeed", prettierBytes(window.totalConnections.downSpeed()));
+  if(window.p2pArchive && window.p2pArchive.content) {
+    console.log("nr of peers", window.p2pArchive.content.peers.length);
+    updateTotal(window.p2pArchive.content.peers.length, prettierBytes(window.totalConnections.downSpeed()), prettierBytes(window.totalConnections.upSpeed()));
+  }
+}, 2000);
 
 updateTotal("1");
 addToConnectionList({"id": "myId", "upload":"500 kbs", "download": "600 kbs"});
