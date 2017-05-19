@@ -64,7 +64,8 @@ video::-webkit-media-controls-enclosure {
   color: black;
 }
 #total-connections {
-  border-bottom: 2px solid black;
+  height: 36px;
+  border-top: 2px solid black;
 }
 #connections-list {
   list-style-type: none;

@@ -8,7 +8,7 @@ var pump = require('pump')
 
 var HIGH_Q = window.location.toString().indexOf('high') > -1
 
-var key = HIGH_Q ? '49036de8c59a846892d5d6366031d723adca46440da15716db50d9c344d71391' : 'ad3998d84ebaf4fea8318b2d41d5b990913531ffdc4b288e4818a5f49642eeb7'
+var key = HIGH_Q ? '49036de8c59a846892d5d6366031d723adca46440da15716db50d9c344d71391' : 'c7eb61045d0e8ea61156d5fbd5b658e8ae7abe816d3b08f4dee31e3aa4a0d133'
 var seed = 'ws://localhost:30000'
 
 var archive = hyperdrive(ram, key, {sparse: true})
@@ -25,21 +25,38 @@ function initPeer(peerId){
    downSpeed: speedometer(20)
  }
 }
+window.SelectPeer = function(id){
 
+}
 window.p2pArchive = archive;
 window.peers = {};
 archive.on('content', function () {
   archive.content.on('upload', function (i, data, peer) {
 
     // if peerid doesnt exist in list, initPeer or fetchPeer
-
+    if(window.peers[peerId]) {
+      // peer exists already
+      window.peers[peerId].upSpeed(data.length);
+    }else{
+      // new peer
+      window.peers[peerId] = initPeer(peerId);
+      window.peers[peerId].upSpeed(data.length);
+    }
     // then set upspeed both for total and individual peer
     window.totalConnections.upSpeed(data.length);
   })
   archive.content.on('download', function (i, data, peer) {
-    // if peerid doesnt exist in list, initPeer or fetchPeer
-    // console.log("", peer);
-    // then set downspeed both for total and individual peer
+    var peerId = peer.remoteId.toString("hex");
+    console.log("peer", peerId);
+    console.log("existing peer", window.peers[peerId]);
+    if(window.peers[peerId]) {
+      // peer exists already
+      window.peers[peerId].downSpeed(data.length);
+    }else{
+      // new peer
+      window.peers[peerId] = initPeer(peerId);
+      window.peers[peerId].downSpeed(data.length);
+    }
     window.totalConnections.downSpeed(data.length);
   })
 archive.metadata.on('download', function (i, b, p) {

@@ -35,7 +35,7 @@ containerElement.appendChild(playerElement);
 
 // Initialize videojs on video-element id
 var player = videojs('videojs_player', {
-    "nativeControlsForTouch": false
+  "nativeControlsForTouch": false
 });
 
 // var vjsButton = videojs.getComponent('button');
@@ -50,20 +50,20 @@ var hqBtn = videojs.extend(Button, {
     /* initialize your button */
     // Add component specific styling
     this.addClass("hq-btn");
-    this.el().innerHTML= "HQ";
+    this.el().innerHTML = "HQ";
   },
   handleClick: function () {
     /* do something on click */
     console.log("enable hq", !this.isHQ);
-    if(this.isHQ) {
+    if (this.isHQ) {
       this.removeClass("active");
       this.isHQ = false;
-      player.src({type: 'application/x-mpegURL', src: DR2 });
+      player.src({ type: 'application/x-mpegURL', src: DR2 });
       player.play();
-    }else{
+    } else {
       this.addClass("active");
       this.isHQ = true;
-      player.src({type: 'application/x-mpegURL', src: mSeedPeer });
+      player.src({ type: 'application/x-mpegURL', src: mSeedPeer });
       player.play()
     }
 
@@ -83,12 +83,10 @@ function updateTotal(connections, down, up) {
   console.log("set innerhtml", connections);
   var totalConn = '<div class="list-data"> | Total Connections: ' + connections + '</div>'
   var down = '<div class="list-data"> | down ' + down + "/s </div>";
-  var up = '<div class="list-data"> | up' + up + "/s </div>";
+  var up = '<div class="list-data"> | up ' + up + "/s </div>";
   totalConnections.innerHTML = totalConn + down + up;
 }
-function updateTotalSpeed(down, up) {
 
-}
 function addToConnectionList(connection) {
   var connectionId = connection.id ? connection.id : "unnamed";
   var connectionUp = connection.upload ? connection.upload : "? kbs";
@@ -108,22 +106,30 @@ function addToConnectionList(connection) {
 }
 function updateMonitor(connections) {
   connectionsList.innerHTML = '';
-  connections.forEach(function(connection) {
+  connections.forEach(function (connection) {
     addToConnectionList(connection);
   });
 }
 var prettierBytes = require('prettier-bytes');
 // global update state
-setInterval(function() {
-  console.log("global upspeed", prettierBytes(window.totalConnections.upSpeed()));
-  console.log("global downspeed", prettierBytes(window.totalConnections.downSpeed()));
-  if(window.p2pArchive && window.p2pArchive.content) {
-    console.log("nr of peers", window.p2pArchive.content.peers.length);
+setInterval(function () {
+  if (window.p2pArchive && window.p2pArchive.content) {
     updateTotal(window.p2pArchive.content.peers.length, prettierBytes(window.totalConnections.downSpeed()), prettierBytes(window.totalConnections.upSpeed()));
+  }
+  console.log("peers", window.peers);
+
+  // reset html
+  connectionsList.innerHTML ="";
+  if (window.peers) {
+    Object.keys(window.peers).map(function (objectKey, index) {
+      var value = window.peers[objectKey];
+      // if element already exists
+      addToConnectionList({ "id": value.id.substring(0, 6), "upload": prettierBytes(value.upSpeed()) + "/s", "download": prettierBytes(value.downSpeed()) + "/s" });
+    });
   }
 }, 2000);
 
 updateTotal("1");
-addToConnectionList({"id": "myId", "upload":"500 kbs", "download": "600 kbs"});
-addToConnectionList({"id": "myId", "upload":"500 kbs", "download": "600 kbs"});
-updateMonitor([{"id": "myId", "upload":"666 kbs", "download": "666 kbs"},{"id": "myId", "upload":"666 kbs", "download": "666 kbs"},{"id": "myId", "upload":"666 kbs", "download": "666 kbs"},{"id": "myId", "upload":"666 kbs", "download": "666 kbs"}]);
+addToConnectionList({ "id": "myId", "upload": "500 kbs", "download": "600 kbs" });
+addToConnectionList({ "id": "myId", "upload": "500 kbs", "download": "600 kbs" });
+updateMonitor([{ "id": "myId", "upload": "666 kbs", "download": "666 kbs" }, { "id": "myId", "upload": "666 kbs", "download": "666 kbs" }, { "id": "myId", "upload": "666 kbs", "download": "666 kbs" }, { "id": "myId", "upload": "666 kbs", "download": "666 kbs" }]);
