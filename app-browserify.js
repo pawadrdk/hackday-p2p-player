@@ -8,7 +8,7 @@ var signalhub = require('signalhub')
 // var key = '5021b0028e788d4e07acbb69203e431a54ab49ef8b89935c3ba05c08fd4038ef'
 // var seed = 'ws://hasselhoff.mafintosh.com:30000'
 
-var key = '344bd65dc86d9fc986b6f40093382f77ba21cfc9d3502c78148cce1ced500bc6'
+var key = 'ad3998d84ebaf4fea8318b2d41d5b990913531ffdc4b288e4818a5f49642eeb7'
 var seed = 'ws://localhost:30000'
 
 var archive = hyperdrive(ram, key, {sparse: true})
