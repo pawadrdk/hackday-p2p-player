@@ -32,6 +32,7 @@ window.p2pArchive = archive;
 window.peers = {};
 archive.on('content', function () {
   archive.content.on('upload', function (i, data, peer) {
+    var peerId = peer.remoteId.toString("hex");
 
     // if peerid doesnt exist in list, initPeer or fetchPeer
     if(window.peers[peerId]) {

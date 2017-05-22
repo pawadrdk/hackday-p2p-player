@@ -128,8 +128,3 @@ setInterval(function () {
     });
   }
 }, 2000);
-
-updateTotal("1");
-addToConnectionList({ "id": "myId", "upload": "500 kbs", "download": "600 kbs" });
-addToConnectionList({ "id": "myId", "upload": "500 kbs", "download": "600 kbs" });
-updateMonitor([{ "id": "myId", "upload": "666 kbs", "download": "666 kbs" }, { "id": "myId", "upload": "666 kbs", "download": "666 kbs" }, { "id": "myId", "upload": "666 kbs", "download": "666 kbs" }, { "id": "myId", "upload": "666 kbs", "download": "666 kbs" }]);
